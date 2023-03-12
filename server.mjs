@@ -40,7 +40,7 @@ app.post('/webhook', async (req, res) => {
         const intentName = body.queryResult.intent.displayName
         const params = body.queryResult.parameters
 
-        console.log(intentName, params)
+        //console.log(intentName, params)
 
         switch (intentName) {
             case "Welcome":
@@ -99,6 +99,7 @@ app.post('/webhook', async (req, res) => {
                     }
 
                     const newOrder = new orderModel({
+                        orderNumber: Math.floor(Math.random() * 1000000000),
                         orderName: "Cake",
                         cakeSize: size.amount,
                         CakeFlavor: flavor,
@@ -119,7 +120,7 @@ app.post('/webhook', async (req, res) => {
                             {
                                 "text": {
                                     "text": [
-                                        `You ordered ${quantity} ${flavor} cake of size ${size.amount} pound.`
+                                        `You ordered ${quantity} ${flavor} cake of size ${size.amount} pound. Your order number is ${newOrder.orderNumber}. Feel free to ask me about your order status.`
                                     ]
                                 }
                             }
@@ -127,6 +128,72 @@ app.post('/webhook', async (req, res) => {
                     })
 
                     break;
+                }
+            case "CheckOrderStatus":
+                {
+                    let orderNumber = params.orderNumber
+
+                    if (!orderNumber) {
+                        res.send({
+                            "fulfillmentMessages": [
+                                {
+                                    "text": {
+                                        "text": [
+                                            "Please provide your order number."
+                                        ]
+                                    }
+                                }
+                            ]
+                        });
+                        return;
+                    }
+
+                    orderModel.findOne({ orderNumber: orderNumber }, function (err, order) {
+                        if (err) {
+                            console.log(err);
+                            res.send({
+                                "fulfillmentMessages": [
+                                    {
+                                        "text": {
+                                            "text": [
+                                                "something is wrong in server, please try again"
+                                            ]
+                                        }
+                                    }
+                                ]
+                            })
+                        }
+                        else {
+                            if (order) {
+                                res.send({
+                                    "fulfillmentMessages": [
+                                        {
+                                            "text": {
+                                                "text": [
+                                                    `Your order status is ${order.status}.`
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                })
+                            }
+                            else {
+                                res.send({
+                                    "fulfillmentMessages": [
+                                        {
+                                            "text": {
+                                                "text": [
+                                                    "No order found with this order number."
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                })
+                            }
+                        }
+                    }
+                    )
+
                 }
             default: {
                 res.send({
@@ -175,6 +242,7 @@ app.listen(port, () => {
 
 /*------------------Schema------------------*/
 let orderSchema = new mongoose.Schema({
+    orderNumber: { type: Number, required: true, unique: true },
     orderName: { type: String, required: true },
     cakeSize: { type: Number, required: true },
     CakeFlavor: { type: String, required: true },
