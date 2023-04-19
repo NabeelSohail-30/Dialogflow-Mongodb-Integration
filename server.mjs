@@ -48,20 +48,21 @@ app.post('/webhook', async (req, res) => {
                     res.send({
                         "fulfillmentMessages": [
                             {
-                                // "text": {
-                                //     "text": [
-                                //         "Welcome to the Cake Shop! How can I help you?"
-                                //     ]
-                                // }
-                                title: 'Welcome to my chatbot!',
-                                subtitle: 'How can I help you today?',
-                                imageUri: 'https://example.com/image.jpg',
-                                buttons: [
-                                    {
-                                        text: 'Visit website',
-                                        postback: 'https://example.com',
-                                    },
-                                ],
+                                "richContent": [
+                                    [
+                                        {
+                                            "type": "info",
+                                            "title": "Info item title",
+                                            "subtitle": "Info item subtitle",
+                                            "image": {
+                                                "src": {
+                                                    "rawUrl": "https://example.com/images/logo.png"
+                                                }
+                                            },
+                                            "actionLink": "https://example.com"
+                                        }
+                                    ]
+                                ]
                             }
                         ]
                     })
