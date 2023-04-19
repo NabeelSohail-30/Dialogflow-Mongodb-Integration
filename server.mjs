@@ -48,21 +48,31 @@ app.post('/webhook', async (req, res) => {
                     res.send({
                         "fulfillmentMessages": [
                             {
-                                "richContent": [
-                                    [
-                                        {
-                                            "type": "info",
-                                            "title": "Info item title",
-                                            "subtitle": "Info item subtitle",
-                                            "image": {
-                                                "src": {
-                                                    "rawUrl": "https://example.com/images/logo.png"
-                                                }
-                                            },
-                                            "actionLink": "https://example.com"
-                                        }
+                                "text": {
+                                    "text": [
+                                        "Welcome to the Cake Shop! How can I help you?"
                                     ]
-                                ]
+                                },
+                                'payload': {
+                                    "richContent": [
+                                        [
+                                            {
+                                                "type": "button",
+                                                "icon": {
+                                                    "type": "chevron_right",
+                                                    "color": "#FF9800"
+                                                },
+                                                "text": "Button text",
+                                                "link": "https://example.com",
+                                                "event": {
+                                                    "name": "",
+                                                    "languageCode": "",
+                                                    "parameters": {}
+                                                }
+                                            }
+                                        ]
+                                    ]
+                                }
                             }
                         ]
                     })
