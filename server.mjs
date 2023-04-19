@@ -53,7 +53,7 @@ app.post('/webhook', async (req, res) => {
                                         "Welcome to the Cake Shop! How can I help you?"
                                     ]
                                 },
-                                'payload': {
+                                "payload": {
                                     "richContent": [
                                         [
                                             {
@@ -75,9 +75,10 @@ app.post('/webhook', async (req, res) => {
                                 }
                             }
                         ]
-                    })
+                    });
                     break;
                 }
+
             case "OrderCake":
                 {
                     let flavor = params.CakeFlavor
