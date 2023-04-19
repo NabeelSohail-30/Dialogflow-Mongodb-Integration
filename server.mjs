@@ -51,28 +51,24 @@ app.post('/webhook', async (req, res) => {
                                 "text": {
                                     "text": [
                                         "Welcome to the Cake Shop! How can I help you?"
-                                    ]
-                                },
-                                "payload": {
+                                    ],
+
                                     "richContent": [
                                         [
                                             {
-                                                "type": "button",
-                                                "icon": {
-                                                    "type": "chevron_right",
-                                                    "color": "#FF9800"
+                                                "type": "info",
+                                                "title": "Info item title",
+                                                "subtitle": "Info item subtitle",
+                                                "image": {
+                                                    "src": {
+                                                        "rawUrl": "https://example.com/images/logo.png"
+                                                    }
                                                 },
-                                                "text": "Button text",
-                                                "link": "https://example.com",
-                                                "event": {
-                                                    "name": "",
-                                                    "languageCode": "",
-                                                    "parameters": {}
-                                                }
+                                                "actionLink": "https://example.com"
                                             }
                                         ]
                                     ]
-                                }
+                                },
                             }
                         ]
                     });
