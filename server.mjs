@@ -69,21 +69,30 @@ app.post('/webhook', async (req, res) => {
                                         "Welcome to the Cake Shop! How can I help you?"
                                     ],
 
-                                    "richContent": [
-                                        [
-                                            {
-                                                "type": "info",
-                                                "title": "Info item title",
-                                                "subtitle": "Info item subtitle",
-                                                "image": {
-                                                    "src": {
-                                                        "rawUrl": "https://example.com/images/logo.png"
-                                                    }
-                                                },
-                                                "actionLink": "https://example.com"
-                                            }
+                                    "payload": {
+                                        "richContent": [
+                                            [
+                                                {
+                                                    "type": "chips",
+                                                    "options": [
+                                                        {
+                                                            "text": "Dog",
+                                                            "link": "https://en.wikipedia.org/wiki/Dog"
+                                                        },
+                                                        {
+                                                            "text": "Cat",
+                                                            "link": "https://en.wikipedia.org/wiki/Cat"
+                                                        },
+                                                        {
+                                                            "text": "Rabbit",
+                                                            "link": "https://en.wikipedia.org/wiki/Rabbit"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
                                         ]
-                                    ]
+
+                                    }
                                 },
                             }
                         ]
