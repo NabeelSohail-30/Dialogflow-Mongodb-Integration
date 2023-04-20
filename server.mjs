@@ -64,36 +64,21 @@ app.post('/webhook', async (req, res) => {
                     res.send({
                         "fulfillmentMessages": [
                             {
-                                "text": {
-                                    "text": [
-                                        "Welcome to the Cake Shop! How can I help you?"
-                                    ],
-
-                                    "payload": {
-                                        "richContent": [
-                                            [
-                                                {
-                                                    "type": "chips",
-                                                    "options": [
-                                                        {
-                                                            "text": "Dog",
-                                                            "link": "https://en.wikipedia.org/wiki/Dog"
-                                                        },
-                                                        {
-                                                            "text": "Cat",
-                                                            "link": "https://en.wikipedia.org/wiki/Cat"
-                                                        },
-                                                        {
-                                                            "text": "Rabbit",
-                                                            "link": "https://en.wikipedia.org/wiki/Rabbit"
-                                                        }
-                                                    ]
-                                                }
-                                            ]
-                                        ]
-
-                                    }
-                                },
+                                "card": {
+                                    "title": "Welcome to the Cake Shop!",
+                                    "subtitle": "How can I help you?",
+                                    "imageUri": "https://example.com/images/cake.jpg",
+                                    "buttons": [
+                                        {
+                                            "text": "Order Cake",
+                                            "postback": "https://example.com/order-cake"
+                                        },
+                                        {
+                                            "text": "View Menu",
+                                            "postback": "https://example.com/menu"
+                                        }
+                                    ]
+                                }
                             }
                         ]
                     });
