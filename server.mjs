@@ -51,6 +51,22 @@ app.post('/webhook', async (req, res) => {
                                 "text": {
                                     "text": [
                                         "Welcome to the Cake Shop! How can I help you?"
+                                    ]
+                                },
+                            }
+                        ]
+                    });
+                    break;
+                }
+
+            case "richResponse":
+                {
+                    res.send({
+                        "fulfillmentMessages": [
+                            {
+                                "text": {
+                                    "text": [
+                                        "Welcome to the Cake Shop! How can I help you?"
                                     ],
 
                                     "richContent": [
