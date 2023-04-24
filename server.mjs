@@ -35,54 +35,42 @@ app.post('/webhook', async (req, res) => {
 
     try {
         const body = req.body;
+        const message = req.body.message;
+        // const intentName = body.queryResult.intent.displayName
+        // const params = body.queryResult.parameters
 
-        const intentName = body.queryResult.intent.displayName
-        const params = body.queryResult.parameters
+        const sessionId = uuid.v4();
+        const sessionPath = sessionClient.projectAgentSessionPath(projectId, sessionId);
 
         //console.log(intentName, params)
 
-        switch (intentName) {
-            case "Welcome":
-                {
-                    res.send({
-                        "fulfillmentMessages": [
-                            {
-                                "text": {
-                                    "text": [
-                                        "Welcome to the Cake Shop! How can I help you?"
-                                    ]
-                                },
-                            }
-                        ]
-                    });
-                    break;
-                }
+        const request = {
+            session: sessionPath,
+            queryInput: {
+                text: {
+                    text: message,
+                    languageCode: 'en-US',
+                },
+            },
+        };
 
-            case "richResponse":
-                {
-                    res.send({
-                        "fulfillmentMessages": [
-                            {
-                                "card": {
-                                    "title": "Welcome to the Cake Shop!",
-                                    "subtitle": "How can I help you?",
-                                    "imageUri": "https://example.com/images/cake.jpg",
-                                    "buttons": [
-                                        {
-                                            "text": "Order Cake",
-                                            "postback": "https://example.com/order-cake"
-                                        },
-                                        {
-                                            "text": "View Menu",
-                                            "postback": "https://example.com/menu"
-                                        }
-                                    ]
-                                }
-                            }
-                        ]
-                    });
-                    break;
-                }
+        const responses = await sessionClient.detectIntent(request);
+        const result = responses[0].queryResult;
+        const intentName = result.intent.displayName
+        const params = result.parameters
+
+        switch (intentName) {
+            case 'Welcome':
+                res.send({
+                    fulfillmentMessages: [
+                        {
+                            text: {
+                                text: ['Welcome to the Cake Shop! How can I help you?'],
+                            },
+                        },
+                    ],
+                });
+                break;
 
             case "OrderCake":
                 {
@@ -221,37 +209,32 @@ app.post('/webhook', async (req, res) => {
             //         )
 
             //     }
-            default: {
+            default:
                 res.send({
-                    "fulfillmentMessages": [
+                    fulfillmentMessages: [
                         {
-                            "text": {
-                                "text": [
-                                    "something is wrong in server, please try again"
-                                ]
-                            }
-                        }
-                    ]
-                })
-            }
+                            text: {
+                                text: ['I did not understand your request. Please try again.'],
+                            },
+                        },
+                    ],
+                });
+                break;
         }
 
     }
     catch (err) {
-        console.log(err);
+        console.error('Error:', err);
         res.send({
-            "fulfillmentMessages": [
+            fulfillmentMessages: [
                 {
-                    "text": {
-                        "text": [
-                            "something is wrong in server, please try again"
-                        ]
-                    }
-                }
-            ]
-        })
+                    text: {
+                        text: ['An error occurred. Please try again.'],
+                    },
+                },
+            ],
+        });
     }
-
 });
 
 
