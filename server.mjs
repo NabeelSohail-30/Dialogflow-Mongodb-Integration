@@ -3,32 +3,31 @@ import path from 'path';
 import cors from 'cors';
 import morgan from 'morgan';
 import mongoose from 'mongoose';
-import dialogflow from 'dialogflow'
+import bodyParser from 'body-parser';
+import dialogflow from '@google-cloud/dialogflow';
+import { v4 as uuid } from 'uuid';
 import { WebhookClient } from 'dialogflow-fulfillment'
 
 const app = express()
 app.use(express.json())
 app.use(cors())
 app.use(morgan('dev'))
+app.use(bodyParser.json());
+
+// Replace with your Dialogflow project ID and the path to your JSON key file
+const projectId = 'helloworld-vyxj';
+const credentials = require('./helloworld-vyxj-c80a976d0f23.json');
+const sessionClient = new dialogflow.SessionsClient({ projectId, credentials });
 
 app.get('/', (req, res) => {
     res.sendStatus(200);
 });
-
-const pluck = (arr) => {
-    const min = 0;
-    const max = arr.length - 1;
-    const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
-
-    return arr[randomNumber]
-}
 
 app.get("/ping", (req, res) => {
     res.send("ping back");
 })
 
 const port = process.env.PORT || 5001;
-
 
 /*---------------------APIs--------------------------*/
 
