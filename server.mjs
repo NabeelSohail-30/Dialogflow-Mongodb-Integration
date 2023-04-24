@@ -32,6 +32,7 @@ const port = process.env.PORT || 5001;
 /*---------------------APIs--------------------------*/
 
 app.post('/webhook', async (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
 
     try {
         const body = req.body;
